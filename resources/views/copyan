@@ -1,0 +1,58 @@
+<div class="card-box pd-20 height-25-p mb-30">
+	<div class="col-md-8">
+		<h4 class="font-20 weight-500 mb-10 text-capitalize"><b>Normalisasi Data</b></h4>
+	</div>
+	<table class="data-table table">
+		<thead>
+			<tr>
+				<th>Nama Karyawan</th>
+				<th class="datatable-nosort">Absensi</th>
+				<th class="datatable-nosort">Keterlambatan</th>
+				<th class="datatable-nosort">Kerjasama</th>
+				<th class="datatable-nosort">Sikap Kerja</th>
+				<th class="datatable-nosort">Skill Improve</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach($arrayabsen as $data)
+			<tr>
+				<td>{{$data['nama_guru']}}</td>
+				<td>{{round($data['normali'],3)}}</td>
+				<td>{{round($data['pedagogik'],3)}}</td>
+				<td>{{round($data['kepribadian'],3)}}</td>
+				<td>{{round($data['profesional'],3)}}</td>
+				<td>{{round($data['sosial'],3)}}</td>
+			</tr>
+			@endforeach
+		</tbody>
+	</table>
+</div> -->
+<div class="row">
+	<div class="col-xl-7 mb-30">
+		<div class="card-box height-100-p pd-20">
+			<h2 class="h4 mb-20"><b>Ranking</b></h2>
+			<table class="data-table table">
+				<thead>
+					<tr>
+						<th class="datatable-nosort">Nama Karyawan</th>
+						<th>Nilai Bobot</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach($tampung as $data)
+					<tr>
+						<td>{{$data['nama_guru']}}</td>
+						<td>{{$data['rank']}}</td>
+					</tr>
+					@endforeach
+				</tbody>
+			</table>
+		</div>
+	</div> -->
+	<div class="col-xl-5 mb-30">
+		<div class="card-box height-100-p pd-20">
+			<h2 class="h4 mb-20"><b>Kesimpulan</b></h2>
+			<p>Dari hasil perhitunga diatas, maka pemilihan Guru berprestasi
+				untuk tahun ini diraih oleh <b>{{$max_rank['nama_guru']}}</b> dengan perolehan nilai <b>{{$max_rank['rank']}}</b></p>
+		</div>
+	</div>
