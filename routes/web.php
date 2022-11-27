@@ -24,7 +24,7 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::get('analisa/kerjasama','analisaController@kerjasama')->name('analisa.kerjasama');
     Route::get('analisa/sikapkerja','analisaController@sikapkerja')->name('analisa.sikapkerja');
     Route::get('analisa/improve','analisaController@improve')->name('analisa.improve');
-    Route::get('hasil','analisaController@matriks_akhir');
+    Route::get('hasil','analisaController@matriks_akhir')->name('hasil_akhir');
     Route::post('index/refresh','indexController@refresh');
     Route::resource('index', 'indexController');
     Route::resource('analisa','analisaController');
@@ -35,7 +35,7 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::resource('skill', 'skillController');
     Route::resource('kriteria', 'kelas\kelasController');
     Route::resource('jadwal', 'jadwalController');
-    
+
 });
 Route::resource('login', 'loginController');
 Route::post('/checklogin', 'loginController@checklogin');

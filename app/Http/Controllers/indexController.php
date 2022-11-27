@@ -36,7 +36,7 @@ class indexController extends Controller
                 $jmlpribadi = ($sikap_kerja->attitude + $sikap_kerja->minat_kerja + $sikap_kerja->minat_belajar + $sikap_kerja->pressure + $sikap_kerja->inisiatif) / 5;
 
                 $skill = skill::where('nip', $data->nip)->where('keterangan', 'approve')->count();
-                
+
                 $alternatif = new alternatif();
                 $alternatif->nip = $data->nip;
                 $alternatif->nama_guru = $data->nama_guru;
@@ -48,7 +48,7 @@ class indexController extends Controller
                 $alternatif->save();
                 // dd($jmlpribadi);
             }
-            
+
         }
         $isialter = alternatif::all();
         $arrayabsen = [];
@@ -167,7 +167,7 @@ class indexController extends Controller
             }
             $penjumlahan_perbandingan[0][$i] = $hasil_banding;
         }
- 
+
         for ($i = 0; $i < count($perbandingan); $i++) {
             for ($j = 0; $j < count($perbandingan); $j++) {
                 $pembagian_perbandingan[$i][$j] = round($perbandingan[$i][$j] / $penjumlahan_perbandingan[0][$j], 2);
@@ -210,12 +210,12 @@ class indexController extends Controller
             array(10,1.49),
         );
         $tampung_index = 0;
-        for ($i=0; $i < count($random_index); $i++) { 
+        for ($i=0; $i < count($random_index); $i++) {
             if ($random_index[$i][0] == count($perbandingan) ) {
                 $tampung_index = $random_index[$i][1];
             }
         }
-        
+
         $cr = $ci / $tampung_index;
         $nilai_kon="";
         if ($cr < 0.1) {
@@ -224,7 +224,8 @@ class indexController extends Controller
             $nilai_kon = "Tidak KONSISTEN";
         }
 
-        // dd($data_nama);  
+        session(['rata_rata_kriteria' => $rata_rata_kriteria]);
+        // dd($data_nama);
         // dd($penjumlahan_perbandingan,$pembagian_perbandingan,$rata_rata_kriteria,$perkalian);
 
         return view(

@@ -30,89 +30,62 @@
         <div class="card-box">
             <br>
             <center>
-                <h4>Alternatif Absensi</h4>
+                <h4>Alternatif Hasil Akhir</h4>
             </center>
-            <hr>
-            <div class="">
-                <table class="data-table table">
-                    <thead>
-                        <tr>
-                            <th class="datatable-nosort">Alternatif</th>
-                            <th class="datatable-nosort">Nilai </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($arry_alter as $data)
-                        <tr>
-                            <td>{{$data['nama_guru']}}</td>
-                            <td>{{$data['absen']}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+
+            <div class="card-body">
+                <div class="table-responsive">
+
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ALT</th>
+                                <?php
+                                $a = 1;
+                                for ($i = 0; $i < count($hasil[0]); $i++) {
+                                    echo "<th class=" . "'" . "datatable-nosort" . "'" . ">";
+                                    echo "<b>K" . $a . "</b>";
+                                    echo "</th>";
+                                    $a = $a + 1;
+                                }
+                                ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $a = 1;
+                            for ($i = 0; $i < count($hasil); $i++) {
+                                echo "<tr>";
+
+                                echo "<th> K" . $a . "</th>";
+                                for ($j = 0; $j < count($hasil[$i]); $j++) {
+                                    echo "<td>" . $hasil[$i][$j] . "</td>";
+                                }
+                                $a++;
+                            }
+                            echo "</tr>";
+                            ?>
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
         <br>
     </div>
 </div>
-<div class="card-box pd-20 height-25-p mb-30">
-    <div class="table-responsive">
-        <h4 class="">Matrix Perbandingan </h4>
-        <br>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ALT</th>
-                    <?php
-                    $a = 1;
-                    for ($i = 0; $i < count($alternatif); $i++) {
-                        echo "<th class=" . "'" . "datatable-nosort" . "'" . ">";
-                        echo "<b>K" . $a . "</b>";
-                        echo "</th>";
-                        $a = $a + 1;
-                    }
-                    ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $a = 1;
-                for ($i = 0; $i < count($alternatif); $i++) {
-                    echo "<tr>";
 
-                    echo "<th> K" . $a . "</th>";
-                    for ($j = 0; $j < count($alternatif); $j++) {
-                        echo "<td>" . $perbandingan_absen[$i][$j] . "</td>";
-                    }
-                    $a++;
-                }
-                echo "</tr>";
-                ?>
-            </tbody>
-            <thead>
-                <tr>
-                    <th><b>TOTAL</b> </th>
-                    <?php
-                    for ($i = 0; $i < count($alternatif); $i++) {
-                        echo "<th><b>" . $penjumlahan_perbandingan[0][$i] . "</b></th>";
-                    }
-                    ?>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
-<div class="card-box pd-20 height-25-p mb-30">
+<div class="card-box pd-20 height-25-p mt-4 mb-30">
     <div class="col-md-8">
         <h4 class="font-20 weight-500 mb-10 text-capitalize">
-            <b>Maka berikut ini adalah nilai rata – rata dari matrix
-                perbandingan kriteria yaitu sebagai berikut:</b>
+            <b>Maka Berikut ini adalah hasil perkalian akhir matriks:</b>
         </h4>
         <?php
         $a = 1;
         $b = 1;
-        for ($i = 0; $i < count($alternatif); $i++) {
-            echo "A" . $a . " = <b>" . $rata_rata_kriteria[$i][0] . "</b><br>";
+        for ($i = 0; $i < count($hasil_jumlah); $i++) {
+            echo "A" . $a . " = <b>" . $hasil_jumlah[$i] . "</b><br>";
             $a = $a + 1;
         }
         ?>

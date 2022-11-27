@@ -75,16 +75,16 @@ class analisaController extends Controller
         }
 
         for ($i = 0; $i < count($pembagian_perbandingan); $i++) {
-            $hasil = 0;
-            for ($j = 0; $j < count($pembagian_perbandingan); $j++) {
-                $hasil = $hasil + $pembagian_perbandingan[0][$j];
-            }
+            $hasil = array_sum($pembagian_perbandingan[$i]);
+            // for ($j = 0; $j < count($pembagian_perbandingan); $j++) {
+            //     $hasil = $hasil + $pembagian_perbandingan[0][$j];
+            // }
             $hasil = $hasil / count($pembagian_perbandingan);
             $rata_rata_kriteria[$i][0] = round($hasil, 6);
         }
 
         session(['rata_rata_absen' => $rata_rata_kriteria]);
-        // dd($pembagian_perbandingan);
+
         return view("analisa.index", [
             'alternatif' => $alternatif, 'arry_alter' => $arry_alter,
             'perbandingan_absen' => $perbandingan_absen, 'penjumlahan_perbandingan' => $penjumlahan_perbandingan,
@@ -145,20 +145,21 @@ class analisaController extends Controller
         }
 
         for ($i = 0; $i < count($pembagian_perbandingan_kehadiran); $i++) {
-            $hasil_kehadiran = 0;
-            for ($j = 0; $j < count($pembagian_perbandingan_kehadiran); $j++) {
-                $hasil_kehadiran = $hasil_kehadiran + $pembagian_perbandingan_kehadiran[0][$j];
-            }
-            $hasil_kehadiran = $hasil_kehadiran / count($pembagian_perbandingan_kehadiran);
+            $hasil_kehadiran = array_sum($pembagian_perbandingan_kehadiran[$i]);
+
+            // for ($j = 0; $j < count($pembagian_perbandingan_kehadiran); $j++) {
+            //     $hasil_kehadiran = $hasil_kehadiran + $pembagian_perbandingan_kehadiran[0][$j];
+            // }
+            $hasil_kehadiran = floatval($hasil_kehadiran) / count($pembagian_perbandingan_kehadiran);
             $rata_rata_kriteria_kehadiran[$i][0] = round($hasil_kehadiran, 3);
         }
 
         session(['rata_rata_kehadiran' => $rata_rata_kriteria_kehadiran]);
-        // dd($perbandingan_kehadiran);
+
         return view("analisa.kehadiran", [
             'alternatif' => $alternatif, 'arry_kehadiran' => $arry_kehadiran,
-            'perbandingan_kehadiran' => $perbandingan_kehadiran,'penjumlahan_perbandingan_kehadiran'=>$penjumlahan_perbandingan_kehadiran,
-            'rata_rata_kriteria_kehadiran'=>$rata_rata_kriteria_kehadiran
+            'perbandingan_kehadiran' => $perbandingan_kehadiran, 'penjumlahan_perbandingan_kehadiran' => $penjumlahan_perbandingan_kehadiran,
+            'rata_rata_kriteria_kehadiran' => $rata_rata_kriteria_kehadiran
         ]);
     }
 
@@ -192,25 +193,26 @@ class analisaController extends Controller
             for ($j = 0; $j < count($alternatif); $j++) {
                 $pembagian_perbandingan_kerjasama[$i][$j] =
                     round($perbandingan_kerjasama[$i][$j] / $penjumlahan_perbandingan_kerjasama[0][$j], 3);
-                    // dd($perbandingan_kerjasama[1][4]);
+                // dd($perbandingan_kerjasama[1][4]);
             }
         }
 
         for ($i = 0; $i < count($pembagian_perbandingan_kerjasama); $i++) {
-            $hasil_kerjasama = 0;
-            for ($j = 0; $j < count($pembagian_perbandingan_kerjasama); $j++) {
-                $hasil_kerjasama = $hasil_kerjasama + $pembagian_perbandingan_kerjasama[0][$j];
-            }
+
+            $hasil_kerjasama = array_sum($pembagian_perbandingan_kerjasama[$i]);
+            // for ($j = 0; $j < count($pembagian_perbandingan_kerjasama); $j++) {
+            //     $hasil_kerjasama = $hasil_kerjasama + $pembagian_perbandingan_kerjasama[0][$j];
+            // }
             $hasil_kerjasama = $hasil_kerjasama / count($pembagian_perbandingan_kerjasama);
             $rata_rata_kriteria_kerjasama[$i][0] = round($hasil_kerjasama, 3);
         }
 
         session(['rata_rata_kerjasama' => $rata_rata_kriteria_kerjasama]);
         // dd($perbandingan_kerjasama);
-        return view("analisa.kerjasama",[
-            'alternatif' => $alternatif, 'arry_kerjasama'=>$arry_kerjasama,
-            'perbandingan_kerjasama'=>$perbandingan_kerjasama,'penjumlahan_perbandingan_kerjasama'=>$penjumlahan_perbandingan_kerjasama,
-            'rata_rata_kriteria_kerjasama'=>$rata_rata_kriteria_kerjasama
+        return view("analisa.kerjasama", [
+            'alternatif' => $alternatif, 'arry_kerjasama' => $arry_kerjasama,
+            'perbandingan_kerjasama' => $perbandingan_kerjasama, 'penjumlahan_perbandingan_kerjasama' => $penjumlahan_perbandingan_kerjasama,
+            'rata_rata_kriteria_kerjasama' => $rata_rata_kriteria_kerjasama
         ]);
     }
 
@@ -248,10 +250,11 @@ class analisaController extends Controller
         }
 
         for ($i = 0; $i < count($pembagian_perbandingan_sikapkerja); $i++) {
-            $hasil_sikapkerja = 0;
-            for ($j = 0; $j < count($pembagian_perbandingan_sikapkerja); $j++) {
-                $hasil_sikapkerja = $hasil_sikapkerja + $pembagian_perbandingan_sikapkerja[0][$j];
-            }
+
+            $hasil_sikapkerja = array_sum($pembagian_perbandingan_sikapkerja[$i]);
+            // for ($j = 0; $j < count($pembagian_perbandingan_sikapkerja); $j++) {
+            //     $hasil_sikapkerja = $hasil_sikapkerja + $pembagian_perbandingan_sikapkerja[0][$j];
+            // }
             $hasil_sikapkerja = $hasil_sikapkerja / count($pembagian_perbandingan_sikapkerja);
             $rata_rata_kriteria_sikapkerja[$i][0] = round($hasil_sikapkerja, 3);
         }
@@ -259,10 +262,10 @@ class analisaController extends Controller
         session(['rata_rata_sikapkerja' => $rata_rata_kriteria_sikapkerja]);
 
         // dd($perbandingan_sikapkerja);
-        return view("analisa.sikapkerja",[
-            'alternatif' => $alternatif, 'arry_sikapkerja'=>$arry_sikapkerja,
-            'perbandingan_sikapkerja'=>$perbandingan_sikapkerja,'penjumlahan_perbandingan_sikapkerja'=>$penjumlahan_perbandingan_sikapkerja,
-            'rata_rata_kriteria_sikapkerja'=>$rata_rata_kriteria_sikapkerja
+        return view("analisa.sikapkerja", [
+            'alternatif' => $alternatif, 'arry_sikapkerja' => $arry_sikapkerja,
+            'perbandingan_sikapkerja' => $perbandingan_sikapkerja, 'penjumlahan_perbandingan_sikapkerja' => $penjumlahan_perbandingan_sikapkerja,
+            'rata_rata_kriteria_sikapkerja' => $rata_rata_kriteria_sikapkerja
         ]);
     }
 
@@ -271,7 +274,7 @@ class analisaController extends Controller
         $alternatif = alternatif::all();
         $arry_improve = [];
         $improve = [];
-        $fixskill=0;
+        $fixskill = 0;
         //<-----------------improve------------------>//
         foreach ($alternatif as $altimprove) {
             if ($altimprove->skill_improve > 7) {
@@ -321,25 +324,81 @@ class analisaController extends Controller
         }
 
         for ($i = 0; $i < count($pembagian_perbandingan_improve); $i++) {
-            $hasil_improve = 0;
-            for ($j = 0; $j < count($pembagian_perbandingan_improve); $j++) {
-                $hasil_improve = $hasil_improve + $pembagian_perbandingan_improve[0][$j];
-            }
+
+            $hasil_improve = array_sum($pembagian_perbandingan_improve[$i]);
+            // for ($j = 0; $j < count($pembagian_perbandingan_improve); $j++) {
+            //     $hasil_improve = $hasil_improve + $pembagian_perbandingan_improve[0][$j];
+            // }
             $hasil_improve = $hasil_improve / count($pembagian_perbandingan_improve);
             $rata_rata_kriteria_improve[$i][0] = round($hasil_improve, 3);
         }
 
         session(['rata_rata_improve' => $rata_rata_kriteria_improve]);
         // dd($perbandingan_improve);
-        return view("analisa.improve",[
-            'alternatif' => $alternatif, 'arry_improve'=>$arry_improve,
-            'perbandingan_improve'=>$perbandingan_improve,'penjumlahan_perbandingan_improve'=>$penjumlahan_perbandingan_improve,
-            'rata_rata_kriteria_improve'=>$rata_rata_kriteria_improve
+        return view("analisa.improve", [
+            'alternatif' => $alternatif, 'arry_improve' => $arry_improve,
+            'perbandingan_improve' => $perbandingan_improve, 'penjumlahan_perbandingan_improve' => $penjumlahan_perbandingan_improve,
+            'rata_rata_kriteria_improve' => $rata_rata_kriteria_improve
         ]);
     }
 
-    public function matriks_akhir(){
-        dd(session('rata_rata_improve'));
-        dd(session('rata_rata_absen'));
+    public function matriks_akhir()
+    {
+        $alternatif = alternatif::all();
+        $data[] = session('rata_rata_absen');
+        $data[]  = session('rata_rata_kehadiran');
+        $data[]  = session('rata_rata_kerjasama');
+        $data[]  = session('rata_rata_sikapkerja');
+        $data[]  = session('rata_rata_improve');
+
+        // dd($data);
+        $rata_rata_kriteria = session('rata_rata_kriteria');
+
+        if (!empty($rata_rata_kriteria)) {
+            $rata_rata_kriteria = array_column($rata_rata_kriteria, 0);
+            $hasil = [];
+            for ($i = 0; $i < count($data); $i++) {
+                $tampung = [];
+                for ($j = 0; $j < count($data[$i]); $j++) {
+                    $res = array_column($data[$i], 0)[$j];
+
+                    // $kali = $res * $rata_rata_kriteria[$j];
+                    $tampung[] = $res;
+                }
+                $hasil[] = $tampung;
+            }
+
+            $hasil = $this->transpose($hasil);
+
+            $arr_hasil = [];
+
+            for ($i = 0; $i < count($hasil); $i++) {
+                $tampung_kali = [];
+                for ($j = 0; $j < count($hasil[$i]); $j++) {
+                    $kali = $hasil[$i][$j] * $rata_rata_kriteria[$j];
+                    $tampung_kali[] = $kali;
+                }
+                $arr_hasil[] = $tampung_kali;
+            }
+
+            $hasil_jumlah = [];
+            foreach ($arr_hasil as $key => $value) {
+
+                $jumlah = array_sum($value);
+                $hasil_jumlah[] = $jumlah;
+            }
+
+            return view('analisa.hasil', ['alternatif' => $alternatif, 'hasil_jumlah' => $hasil_jumlah, 'hasil' => $arr_hasil]);
+        }
+    }
+
+    function transpose($array_one) {
+        $array_two = [];
+        foreach ($array_one as $key => $item) {
+            foreach ($item as $subkey => $subitem) {
+                $array_two[$subkey][$key] = $subitem;
+            }
+        }
+        return $array_two;
     }
 }

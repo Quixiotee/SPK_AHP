@@ -21,6 +21,9 @@
             <nav class="navbar navbar-light">
                 <button type="button" class="btn btn-light btn-sm btn-block"><a class="navbar-brand" href="{{route('analisa.improve')}}">Skill Improve</a></button>
             </nav>
+            <nav class="navbar navbar-light">
+                <button type="button" class="btn btn-light btn-sm btn-block"><a class="navbar-brand" href="{{route('hasil_akhir')}}">Hasil Akhir</a></button>
+            </nav>
         </div>
     </div>
     <div class="col-9">
