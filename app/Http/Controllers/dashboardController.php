@@ -7,6 +7,7 @@ use App\guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
+use App\Perhitungan;
 
 class dashboardController extends Controller
 {
@@ -20,13 +21,20 @@ class dashboardController extends Controller
         $guru = guru::all();
         $tkaryawan = $guru->count();
         $year = date("Y");
-        $waktu = absensi::whereTime('jam_masuk', '>', '07:00:00')->whereYear('tanggal_absen','=',$year)->count();
+        $waktu = absensi::whereTime('jam_masuk', '>', '07:00:00')->whereYear('tanggal_absen', '=', $year)->count();
         $nama_karyawan = guru::select("nama_guru")->pluck('nama_guru');
-        // dd($nama_karyawan);
-        return view('dashboard.index',['tkaryawan' => $tkaryawan,'waktu'=>$waktu,'nama_karyawan'=>$nama_karyawan]);
+
+        $perhitungan = new Perhitungan();
+        $perhitungan = $perhitungan->getAll(date('Y'));
+        $hasil_jumlah = $perhitungan['hasil_jumlah'];
+        $keys = array_column($hasil_jumlah, 'jumlah');
+        array_multisort($keys, SORT_DESC, $hasil_jumlah);
+
+        return view('dashboard.index', ['tkaryawan' => $tkaryawan, 'waktu' => $waktu, 'nama_karyawan' => $nama_karyawan, 'hasil' => $hasil_jumlah]);
     }
 
-    public function chart1(){
+    public function chart1()
+    {
         $guru = guru::all();
         $nama_karyawan = DB::table('guru')->select('nama_guru')->get();
         dd($nama_karyawan);

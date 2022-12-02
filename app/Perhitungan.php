@@ -1,30 +1,64 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use App\pembayaran;
-use App\peserta;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
-use App\guru;
-use App\absensi;
-use App\pedagogik;
-use App\kepribadian;
-use App\profesional;
-use App\sosial;
-use App\alternatif;
+use Illuminate\Database\Eloquent\Model;
 use App\kriteria;
-use App\Perhitungan;
-use Illuminate\Foundation\Mix;
-use League\CommonMark\Extension\Table\Table;
 
-class analisaController extends Controller
+class Perhitungan extends Model
 {
-    public function index(Request $request)
+
+    public function getAll($periode)
     {
-        $periode = $request->get('periode');
+        $prioritas = [];
+
+        $nama_prioritas = [];
+
+        $perbandingan = [];
+
+        $pembagian_perbandingan = [];
+
+        // $periode = date('Y');
+
         $alternatif = alternatif::where('periode', $periode)->get();
+
+        $kriteria = kriteria::all();
+        foreach ($kriteria as $isi_kri) {
+            array_push($prioritas, $isi_kri->bobot);
+            array_push($nama_prioritas, $isi_kri->nama_kriteria);
+        }
+
+        for ($i = 0; $i < count($kriteria); $i++) {
+            for ($j = 0; $j < count($kriteria); $j++) {
+                $perbandingan[$i][$j] = round($prioritas[$i] / $prioritas[$j], 2);
+            }
+        }
+        for ($i = 0; $i < count($perbandingan); $i++) {
+            $hasil_banding = 0;
+            for ($j = 0; $j < count($perbandingan); $j++) {
+                $hasil_banding = $hasil_banding + $perbandingan[$j][$i];
+            }
+            $penjumlahan_perbandingan[0][$i] = $hasil_banding;
+        }
+
+        for ($i = 0; $i < count($perbandingan); $i++) {
+            for ($j = 0; $j < count($perbandingan); $j++) {
+                $pembagian_perbandingan[$i][$j] = round($perbandingan[$i][$j] / $penjumlahan_perbandingan[0][$j], 2);
+            }
+        }
+
+        for ($i = 0; $i < count($pembagian_perbandingan); $i++) {
+            $hasil = 0;
+            for ($j = 0; $j < count($pembagian_perbandingan); $j++) {
+                $hasil = $hasil + $pembagian_perbandingan[$i][$j];
+            }
+            $hasil = $hasil / count($pembagian_perbandingan);
+            $rata_rata_kriteria[$i][0] = round($hasil, 2);
+        }
+
+
+        // perhitungan absen
+
         $arry_alter = [];
         $absen = [];
         $fixabsen = 0;
@@ -78,24 +112,17 @@ class analisaController extends Controller
             }
         }
 
-        $rata_rata_kriteria = [];
+        $rata_rata_absen = [];
         for ($i = 0; $i < count($pembagian_perbandingan); $i++) {
             $hasil = array_sum($pembagian_perbandingan[$i]);
             $hasil = $hasil / count($pembagian_perbandingan);
-            $rata_rata_kriteria[$i][0] = round($hasil, 6);
+            $rata_rata_absen[$i][0] = round($hasil, 6);
         }
 
-        return view("analisa.index", [
-            'alternatif' => $alternatif, 'arry_alter' => $arry_alter,
-            'perbandingan_absen' => $perbandingan_absen, 'penjumlahan_perbandingan' => $penjumlahan_perbandingan,
-            'rata_rata_kriteria' => $rata_rata_kriteria
-        ]);
-    }
 
-    public function kehadiran(Request $request)
-    {
-        $periode = $request->get('periode');
-        $alternatif = alternatif::where('periode', $periode)->get();
+
+        // perhitungan kehadiran
+
         $arry_kehadiran = [];
         $kehadiran = [];
         $fixkehadiran = 0;
@@ -152,24 +179,12 @@ class analisaController extends Controller
         for ($i = 0; $i < count($pembagian_perbandingan_kehadiran); $i++) {
             $hasil_kehadiran = array_sum($pembagian_perbandingan_kehadiran[$i]);
 
-            // for ($j = 0; $j < count($pembagian_perbandingan_kehadiran); $j++) {
-            //     $hasil_kehadiran = $hasil_kehadiran + $pembagian_perbandingan_kehadiran[0][$j];
-            // }
             $hasil_kehadiran = floatval($hasil_kehadiran) / count($pembagian_perbandingan_kehadiran);
             $rata_rata_kriteria_kehadiran[$i][0] = round($hasil_kehadiran, 3);
         }
 
-        return view("analisa.kehadiran", [
-            'alternatif' => $alternatif, 'arry_kehadiran' => $arry_kehadiran,
-            'perbandingan_kehadiran' => $perbandingan_kehadiran, 'penjumlahan_perbandingan_kehadiran' => $penjumlahan_perbandingan_kehadiran,
-            'rata_rata_kriteria_kehadiran' => $rata_rata_kriteria_kehadiran
-        ]);
-    }
 
-    public function kerjasama(Request $request)
-    {
-        $periode = $request->get('periode');
-        $alternatif = alternatif::where('periode', $periode)->get();
+        // perhitungan kerjasama
         $arry_kerjasama = [];
         $kerjasama = [];
         //<-----------------kerjasama------------------>//
@@ -207,26 +222,14 @@ class analisaController extends Controller
         for ($i = 0; $i < count($pembagian_perbandingan_kerjasama); $i++) {
 
             $hasil_kerjasama = array_sum($pembagian_perbandingan_kerjasama[$i]);
-            // for ($j = 0; $j < count($pembagian_perbandingan_kerjasama); $j++) {
-            //     $hasil_kerjasama = $hasil_kerjasama + $pembagian_perbandingan_kerjasama[0][$j];
-            // }
+
             $hasil_kerjasama = $hasil_kerjasama / count($pembagian_perbandingan_kerjasama);
             $rata_rata_kriteria_kerjasama[$i][0] = round($hasil_kerjasama, 3);
         }
 
-        session(['rata_rata_kerjasama' => $rata_rata_kriteria_kerjasama]);
-        // dd($perbandingan_kerjasama);
-        return view("analisa.kerjasama", [
-            'alternatif' => $alternatif, 'arry_kerjasama' => $arry_kerjasama,
-            'perbandingan_kerjasama' => $perbandingan_kerjasama, 'penjumlahan_perbandingan_kerjasama' => $penjumlahan_perbandingan_kerjasama,
-            'rata_rata_kriteria_kerjasama' => $rata_rata_kriteria_kerjasama
-        ]);
-    }
 
-    public function sikapkerja(Request $request)
-    {
-        $periode = $request->get('periode');
-        $alternatif = alternatif::where('periode', $periode)->get();
+        // perhitungan sikap kerja
+
         $arry_sikapkerja = [];
         $sikapkerja = [];
         //<-----------------sikapkerja------------------>//
@@ -263,25 +266,13 @@ class analisaController extends Controller
         for ($i = 0; $i < count($pembagian_perbandingan_sikapkerja); $i++) {
 
             $hasil_sikapkerja = array_sum($pembagian_perbandingan_sikapkerja[$i]);
-            // for ($j = 0; $j < count($pembagian_perbandingan_sikapkerja); $j++) {
-            //     $hasil_sikapkerja = $hasil_sikapkerja + $pembagian_perbandingan_sikapkerja[0][$j];
-            // }
+
             $hasil_sikapkerja = $hasil_sikapkerja / count($pembagian_perbandingan_sikapkerja);
             $rata_rata_kriteria_sikapkerja[$i][0] = round($hasil_sikapkerja, 3);
         }
 
-        // dd($perbandingan_sikapkerja);
-        return view("analisa.sikapkerja", [
-            'alternatif' => $alternatif, 'arry_sikapkerja' => $arry_sikapkerja,
-            'perbandingan_sikapkerja' => $perbandingan_sikapkerja, 'penjumlahan_perbandingan_sikapkerja' => $penjumlahan_perbandingan_sikapkerja,
-            'rata_rata_kriteria_sikapkerja' => $rata_rata_kriteria_sikapkerja
-        ]);
-    }
 
-    public function improve(Request $request)
-    {
-        $periode = $request->get('periode');
-        $alternatif = alternatif::where('periode', $periode)->get();
+        // perhitungan improve
         $arry_improve = [];
         $improve = [];
         $fixskill = 0;
@@ -339,35 +330,66 @@ class analisaController extends Controller
         for ($i = 0; $i < count($pembagian_perbandingan_improve); $i++) {
 
             $hasil_improve = array_sum($pembagian_perbandingan_improve[$i]);
-            // for ($j = 0; $j < count($pembagian_perbandingan_improve); $j++) {
-            //     $hasil_improve = $hasil_improve + $pembagian_perbandingan_improve[0][$j];
-            // }
+
             $hasil_improve = $hasil_improve / count($pembagian_perbandingan_improve);
             $rata_rata_kriteria_improve[$i][0] = round($hasil_improve, 3);
         }
 
-       
-        return view("analisa.improve", [
-            'alternatif' => $alternatif, 'arry_improve' => $arry_improve,
-            'perbandingan_improve' => $perbandingan_improve, 'penjumlahan_perbandingan_improve' => $penjumlahan_perbandingan_improve,
-            'rata_rata_kriteria_improve' => $rata_rata_kriteria_improve
-        ]);
+
+        $data[]  = $rata_rata_absen;
+        $data[]  = $rata_rata_kriteria_kehadiran;
+        $data[]  = $rata_rata_kriteria_kerjasama;
+        $data[]  = $rata_rata_kriteria_sikapkerja;
+        $data[]  = $rata_rata_kriteria_improve;
+
+
+        if (!empty($rata_rata_kriteria)) {
+            $rata_rata_kriteria = array_column($rata_rata_kriteria, 0);
+            $hasil = [];
+            for ($i = 0; $i < count($data); $i++) {
+                $tampung = [];
+                for ($j = 0; $j < count($data[$i]); $j++) {
+                    $res = array_column($data[$i], 0)[$j];
+                    $tampung[] = $res;
+                }
+                $hasil[] = $tampung;
+            }
+
+            $hasil = $this->transpose($hasil);
+
+            $arr_hasil = [];
+
+            for ($i = 0; $i < count($hasil); $i++) {
+                $tampung_kali = [];
+                for ($j = 0; $j < count($hasil[$i]); $j++) {
+                    $kali = $hasil[$i][$j] * $rata_rata_kriteria[$j];
+                    $tampung_kali[] = $kali;
+                }
+                $arr_hasil[] = $tampung_kali;
+            }
+
+            $hasil_jumlah = [];
+            foreach ($arr_hasil as $key => $value) {
+
+                $jumlah = array_sum($value);
+                $x['nip'] = $alternatif[$key]->nip;
+                $x['jumlah'] = $jumlah;
+                $x['nama_guru'] = $alternatif[$key]->nama_guru;
+                $hasil_jumlah[] = $x;
+            }
+
+
+            return [
+                'alternatif' => $alternatif,
+                'hasil_jumlah' => $hasil_jumlah,
+                'arr_hasil' => $arr_hasil
+            ];
+        }
     }
 
-    public function matriks_akhir(Request $request)
+
+    public function transpose($array_one)
     {
-        $periode = $request->get('periode');
-        $perhitungan = new Perhitungan();
-        $perhitungan = $perhitungan->getAll($periode);
-        $alternatif = $perhitungan['alternatif'];
-        $hasil_jumlah = $perhitungan['hasil_jumlah'];
-        $arr_hasil = $perhitungan['arr_hasil'];
-
-        return view('analisa.hasil', ['alternatif' => $alternatif, 'hasil_jumlah' => $hasil_jumlah, 'hasil' => $arr_hasil]);
-
-    }
-
-    function transpose($array_one) {
         $array_two = [];
         foreach ($array_one as $key => $item) {
             foreach ($item as $subkey => $subitem) {
@@ -375,5 +397,15 @@ class analisaController extends Controller
             }
         }
         return $array_two;
+    }
+
+    public static function getPeriode()
+    {
+        $periode = [];
+        for ($i = 2021; $i <= date('Y'); $i++) {
+            $periode[] = $i;
+        }
+
+        return $periode;
     }
 }

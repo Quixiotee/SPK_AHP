@@ -25,7 +25,7 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::get('analisa/sikapkerja','analisaController@sikapkerja')->name('analisa.sikapkerja');
     Route::get('analisa/improve','analisaController@improve')->name('analisa.improve');
     Route::get('hasil','analisaController@matriks_akhir')->name('hasil_akhir');
-    Route::post('index/refresh','indexController@refresh');
+    // Route::post('index/refresh','indexController@refresh');
     Route::resource('index', 'indexController');
     Route::resource('analisa','analisaController');
     Route::resource('dashboard','dashboardController');
