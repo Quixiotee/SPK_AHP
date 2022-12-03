@@ -29,10 +29,12 @@
     <div class="card-box pd-20 height-25-p mb-30">
         <div class="col-md-8">
             <h4 class="font-20 weight-500 mb-10 text-capitalize"><b>Data Alternatif</b></h4>
-            {{-- <form action="index/refresh" method="post">
-                <a class="btn btn-primary" href="index/refresh" style="float:left;"><i class="fa fa-refresh"
-                        aria-hidden="true"></i> Refresh </a>
-            </form> --}}
+            <form action="{{ route('index.refresh') }}" method="post">
+                @csrf
+                <button class="btn btn-primary" type="submit" id="btnRefresh" style="float:left;"><i class="fa fa-refresh"
+                        aria-hidden="true"></i> Refresh </button>
+            </form>
+
         </div>
         <table class="data-table table">
             <thead>
@@ -331,17 +333,7 @@
         </div>
     </div>
     <!-- js -->
-    <!-- <script src="{{ asset('assets/vendors/scripts/core.js') }}"></script>
-            <script src="{{ asset('assets/vendors/scripts/script.min.js') }}"></script>
-            <script src="{{ asset('assets/vendors/scripts/Chart.js') }}"></script>
-            <script src="{{ asset('assets/vendors/scripts/process.js') }}"></script>
-            <script src="{{ asset('assets/vendors/scripts/layout-settings.js') }}"></script>
-            <script src="{{ asset('assets/src/plugins/apexcharts/apexcharts.min.js') }}"></script>
-            <script src="{{ asset('assets/src/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
-            <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.bootstrap4.min.js') }}"></script>
-            <script src="{{ asset('assets/src/plugins/datatables/js/dataTables.responsive.min.js') }}"></script>
-            <script src="{{ asset('assets/src/plugins/datatables/js/responsive.bootstrap4.min.js') }}"></script>
-            <script src="{{ asset('assets/vendors/scripts/dashboard.js') }}"></script> -->
+
     <script>
         function myFunction() {
             var x = document.getElementById("hitung");

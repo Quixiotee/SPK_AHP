@@ -248,41 +248,93 @@ class indexController extends Controller
     }
 
 
-    public function show()
+    public function refresh()
     {
-        DB::table('alternatif')->delete();
+
+        $data_periode = [];
+        for ($i = 2021; $i <= date('Y'); $i++) {
+            $data_periode[] = $i;
+        }
 
         $guru = guru::all();
         foreach ($guru as $data) {
-            $cekalternatif = alternatif::where('nip', $data->nip)->first();
-            if (!$cekalternatif) {
-                $absen = absensi::where('nip', $data->nip)->where('status', 'alpha')->count();
+            foreach ($data_periode as $key => $periode) {
+                $cekalternatif = alternatif::where('nip', $data->nip)->where('periode', $periode)->first();
+                if (!$cekalternatif) {
 
-                $waktu = absensi::where('nip', $data->nip)->whereTime('jam_masuk', '>', '07:00')->count();
+                    $absen = absensi::where('nip', $data->nip)->whereYear('tanggal_absen', $periode)->where('status', 'Alpha')->orWhere('status', 'Sakit')->orWhere('status', 'Izin')->count();
 
-                $kerjasama = kerjasama::where('nip', $data->nip)->first();
-                $jmlpeda = ($kerjasama->komunikasi + $kerjasama->penyesuaian_diri + $kerjasama->konflik) / 3;
+                    $waktu = absensi::where('nip', $data->nip)->whereYear('tanggal_absen', $periode)->whereTime('jam_masuk', '>', '07:00:00')->count();
 
-                $sikap_kerja = sikapkerja::where('nip', $data->nip)->first();
-                $jmlpribadi = ($sikap_kerja->attitude + $sikap_kerja->minat_kerja + $sikap_kerja->minat_belajar + $sikap_kerja->pressure + $sikap_kerja->inisiatif) / 5;
+                    $kerjasama = kerjasama::where('nip', $data->nip)->whereYear('tanggal_penilaian_kerjasama', $periode)->first();
 
-                $skill = skill::where('keterangan', 'approve')->count();
+                    if ($kerjasama) {
+                        $jmlpeda = ($kerjasama->komunikasi + $kerjasama->penyesuainan_diri + $kerjasama->konflik) / 3;
+                    } else {
+                        $jmlpeda = 0;
+                    }
 
-                $alternatif = new alternatif();
-                $alternatif->nip = $data->nip;
-                $alternatif->nama_guru = $data->nama_guru;
-                $alternatif->absensi = $absen;
-                $alternatif->waktu_kehadiran = $waktu;
-                $alternatif->kerjasama = $jmlpeda;
-                $alternatif->sikap_kerja = $jmlpribadi;
-                $alternatif->skill_improve = $skill;
-                $alternatif->save();
+
+                    $sikap_kerja = sikapkerja::where('nip', $data->nip)->whereYear('tanggal_penilaian_sikapkerja', $periode)->first();
+
+                    if ($sikap_kerja) {
+
+                        $jmlpribadi = ($sikap_kerja->attitude + $sikap_kerja->minat_kerja + $sikap_kerja->minat_belajar + $sikap_kerja->pressure + $sikap_kerja->inisiatif) / 5;
+                    } else {
+                        $jmlpribadi = 0;
+                    }
+
+
+                    $skill = skill::where('nip', $data->nip)->whereYear('tanggal_input', $periode)->where('keterangan', 'approve')->count();
+
+                    $alternatif = new alternatif();
+                    $alternatif->nip = $data->nip;
+                    $alternatif->nama_guru = $data->nama_guru;
+                    $alternatif->absensi = $absen;
+                    $alternatif->waktu_kehadiran = $waktu;
+                    $alternatif->kerjasama = $jmlpeda;
+                    $alternatif->sikap_kerja = $jmlpribadi;
+                    $alternatif->skill_improve = $skill;
+                    $alternatif->periode = $periode;
+                    $alternatif->save();
+                } else {
+
+                    $absen = absensi::where('nip', $data->nip)->whereYear('tanggal_absen', $periode)->where('status', 'Alpha')->orWhere('status', 'Sakit')->orWhere('status', 'Izin')->count();
+
+                    $waktu = absensi::where('nip', $data->nip)->whereYear('tanggal_absen', $periode)->whereTime('jam_masuk', '>', '07:00:00')->count();
+
+                    $kerjasama = kerjasama::where('nip', $data->nip)->whereYear('tanggal_penilaian_kerjasama', $periode)->first();
+
+                    if ($kerjasama) {
+                        $jmlpeda = ($kerjasama->komunikasi + $kerjasama->penyesuainan_diri + $kerjasama->konflik) / 3;
+                    } else {
+                        $jmlpeda = 0;
+                    }
+
+
+                    $sikap_kerja = sikapkerja::where('nip', $data->nip)->whereYear('tanggal_penilaian_sikapkerja', $periode)->first();
+
+                    if ($sikap_kerja) {
+
+                        $jmlpribadi = ($sikap_kerja->attitude + $sikap_kerja->minat_kerja + $sikap_kerja->minat_belajar + $sikap_kerja->pressure + $sikap_kerja->inisiatif) / 5;
+                    } else {
+                        $jmlpribadi = 0;
+                    }
+
+                    $skill = skill::where('nip', $data->nip)->whereYear('tanggal_input', $periode)->where('keterangan', 'approve')->count();
+
+                    $cekalternatif->absensi = $absen;
+                    $cekalternatif->waktu_kehadiran = $waktu;
+                    $cekalternatif->kerjasama = $jmlpeda;
+                    $cekalternatif->sikap_kerja = $jmlpribadi;
+                    $cekalternatif->skill_improve = $skill;
+                    $cekalternatif->save();
+                }
             }
         }
-        $isialter = alternatif::all();
-        return view(
-            'index',
-            ['isialter' => $isialter]
-        );
+
+        $periode = alternatif::orderBy('periode', 'DESC')->first()->periode;
+
+        return redirect()->route('index.index', ['periode' => $periode]);
     }
 }
