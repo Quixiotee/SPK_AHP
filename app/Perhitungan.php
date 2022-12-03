@@ -408,4 +408,25 @@ class Perhitungan extends Model
 
         return $periode;
     }
+
+
+    public function getBulanById($data)
+    {
+        $months = array(
+            'Jan',
+            'Feb',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July ',
+            'Aug',
+            'Sept',
+            'Oct',
+            'Nov',
+            'Dec',
+        );
+
+        return $months[$data - 1];
+    }
 }

@@ -25,9 +25,19 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::get('analisa/sikapkerja', 'analisaController@sikapkerja')->name('analisa.sikapkerja');
     Route::get('analisa/improve', 'analisaController@improve')->name('analisa.improve');
     Route::get('hasil', 'analisaController@matriks_akhir')->name('hasil_akhir');
+
+    //dashboard
+    Route::group(['prefix' => 'dashboard', 'as' => 'dashboard.'], function () {
+        Route::get('chart-kinerja', 'dashboardController@getChartKinerja')->name('chart-kinerja');
+
+        Route::get('chart-detail', 'dashboardController@getChartDetail')->name('chart-detail');
+    });
+
+
     Route::group(['prefix' => 'index', 'as' => 'index.'], function () {
         Route::post('refresh', 'indexController@refresh')->name('refresh');
     });
+    
     Route::resource('index', 'indexController');
     Route::resource('analisa', 'analisaController');
     Route::resource('dashboard', 'dashboardController');

@@ -84,6 +84,7 @@
         </div>
     </div>
     <!-- js -->
+    <script src="{{ asset('assets/src/scripts/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/scripts/core.js') }}"></script>
     <script src="{{ asset('assets/vendors/scripts/Chart.js') }}"></script>
     <script src="{{ asset('assets/vendors/scripts/script.min.js') }}"></script>
