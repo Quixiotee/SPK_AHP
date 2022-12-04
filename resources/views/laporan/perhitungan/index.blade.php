@@ -1,9 +1,9 @@
 @extends('layout')
-@section('laporan-perangkingan', 'active')
+@section('laporan-perhitungan', 'active')
 @section('content')
     <!-- Datatable start -->
     <div class="card-box pd-20 height-25-p mb-30">
-        <form action="{{ route('laporan.perangkingan.index') }}" method="get">
+        <form action="{{ route('laporan.perhitungan.index') }}" method="get">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
