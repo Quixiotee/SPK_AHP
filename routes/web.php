@@ -37,7 +37,7 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::group(['prefix' => 'index', 'as' => 'index.'], function () {
         Route::post('refresh', 'indexController@refresh')->name('refresh');
     });
-    
+
     Route::resource('index', 'indexController');
     Route::resource('analisa', 'analisaController');
     Route::resource('dashboard', 'dashboardController');
@@ -47,6 +47,13 @@ Route::group(['middleware' => 'checklogin'], function () {
     Route::resource('skill', 'skillController');
     Route::resource('kriteria', 'kelas\kelasController');
     Route::resource('jadwal', 'jadwalController');
+
+
+    //laporan
+    Route::group(['prefix' => 'laporan', 'as' => 'laporan.', 'namespace' => 'Laporan'], function () {
+        Route::resource('perhitungan', 'PerhitunganController');
+        Route::resource('perangkingan', 'RangkingController');
+    });
 });
 Route::resource('login', 'loginController');
 Route::post('/checklogin', 'loginController@checklogin');

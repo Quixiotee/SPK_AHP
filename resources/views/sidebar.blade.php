@@ -34,5 +34,15 @@
 				<li><a class="breadcrumb-item @yield('improve')" href="{{route('skill.index')}}">Data Skill Improve</a></li>
 			</ul>
 		</li>
+        <li class="dropdown">
+			<a href="javascript:;" class="dropdown-toggle">
+				<span class="micon dw dw-file"></span><span class="mtext">Laporan</span>
+			</a>
+			<ul class="submenu">
+				<li><a class="breadcrumb-item @yield('laporan-perhitungan')" href="{{route('laporan.perhitungan.index')}}">Perhitungan</a></li>
+				<li><a class="breadcrumb-item @yield('laporan-perangkingan')" href="{{route('laporan.perangkingan.index')}}">Perangkingan</a></li>
+
+			</ul>
+		</li>
 	</ul>
 </div>

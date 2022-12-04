@@ -374,6 +374,7 @@ class Perhitungan extends Model
                 $jumlah = array_sum($value);
                 $x['nip'] = $alternatif[$key]->nip;
                 $x['jumlah'] = $jumlah;
+                $x['periode'] = $periode;
                 $x['nama_guru'] = $alternatif[$key]->nama_guru;
                 $hasil_jumlah[] = $x;
             }
