@@ -8,13 +8,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="periode_awal">Periode Awal</label>
-                        <input type="date" class="form-control" id="periode_awal" required name="periode_awal">
+                        <input type="date" value="{{request('periode_awal')}}" class="form-control" id="periode_awal" required name="periode_awal">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="periode_akhir">Periode Akhir</label>
-                        <input type="date" class="form-control" id="periode_akhir" required name="periode_akhir">
+                        <input type="date" value="{{request('periode_akhir')}}" class="form-control" id="periode_akhir" required name="periode_akhir">
                     </div>
                 </div>
             </div>
