@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Laporan Perhitungan</title>
+    <title>Laporan Perangkingan</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -23,7 +23,7 @@
     </style>
 
     <center>
-        <h4>Laporan Perhitungan</h4>
+        <h4>Laporan Perangkingan</h4>
         @if (is_array($periode_awal))
             <h5>Semua Periode</h5>
         @else
