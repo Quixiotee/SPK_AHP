@@ -51,6 +51,7 @@ Route::group(['middleware' => 'checklogin'], function () {
 
     //laporan
     Route::group(['prefix' => 'laporan', 'as' => 'laporan.', 'namespace' => 'Laporan'], function () {
+        Route::resource('karyawan', 'KaryawanController');
         Route::resource('perhitungan', 'PerhitunganController');
         Route::resource('perangkingan', 'RangkingController');
     });

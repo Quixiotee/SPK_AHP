@@ -1,20 +1,22 @@
 @extends('layout')
-@section('laporan-perangkingan', 'active')
+@section('laporan-perhitungan', 'active')
 @section('content')
     <!-- Datatable start -->
     <div class="card-box pd-20 height-25-p mb-30">
-        <form action="{{ route('laporan.perangkingan.index') }}" method="get">
+        <form action="{{ route('laporan.perhitungan.index') }}" method="get">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="periode_awal">Periode Awal</label>
-                        <input type="date" value="{{request('periode_awal')}}" class="form-control" id="periode_awal" required name="periode_awal">
+                        <input type="date" value="{{ request('periode_awal') }}" class="form-control" id="periode_awal"
+                            required name="periode_awal">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="periode_akhir">Periode Akhir</label>
-                        <input type="date" value="{{request('periode_akhir')}}" class="form-control" id="periode_akhir" required name="periode_akhir">
+                        <input type="date" value="{{ request('periode_akhir') }}" class="form-control" id="periode_akhir"
+                            required name="periode_akhir">
                     </div>
                 </div>
             </div>
@@ -67,7 +69,8 @@
             $('#btnCetak').on('click', function() {
                 var periode_awal = $('#periode_awal').val()
                 var periode_akhir = $('#periode_akhir').val()
-                var url = "{{ url('/laporan/perangkingan') }}?status=cetak&periode_awal=" + periode_awal + "&periode_akhir=" + periode_akhir;
+                var url = "{{ url('/laporan/perangkingan') }}?status=cetak&periode_awal=" + periode_awal +
+                    "&periode_akhir=" + periode_akhir;
 
                 window.open(url, '_blank')
 

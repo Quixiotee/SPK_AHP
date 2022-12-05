@@ -39,6 +39,7 @@
 				<span class="micon dw dw-file"></span><span class="mtext">Laporan</span>
 			</a>
 			<ul class="submenu">
+                <li><a class="breadcrumb-item @yield('laporan-karyawan')" href="{{route('laporan.karyawan.index')}}">Karyawan</a></li>
 				<li><a class="breadcrumb-item @yield('laporan-perhitungan')" href="{{route('laporan.perhitungan.index')}}">Perhitungan</a></li>
 				<li><a class="breadcrumb-item @yield('laporan-perangkingan')" href="{{route('laporan.perangkingan.index')}}">Perangkingan</a></li>
 
